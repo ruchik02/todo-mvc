@@ -120,27 +120,18 @@ span{
     text-decoration: underline;
     cursor: pointer;
 }
-.check-box{
-    background-color: white;
+input[type="checkbox"]{
     width: 20px;
     height: 20px;
-    border: 2px solid gray;
-    border-radius: 50px;
-    cursor: pointer;
-    display: flex;
+    background: none;
+    border-radius: 50%;
 }
-/* .cross{
-    border: none;
-    height: 20px;
-    background-color: white;
-    cursor: pointer;
-    visibility: hidden;
+.check-box{
+    clip-path: circle(50% at 50% 50%);
+}
+input[type="checkbox"]:checked {
+   border: 1px solid black;
   }
-  .cross:hover{
-    visibility: visible;
-    color: red;
-  } */
-
 
 
 
