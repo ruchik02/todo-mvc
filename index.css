@@ -129,9 +129,15 @@ input[type="checkbox"]{
 .check-box{
     clip-path: circle(50% at 50% 50%);
 }
-input[type="checkbox"]:checked {
-   border: 1px solid black;
-  }
+.cross{
+    visibility: hidden;
+    color: #cc9a9a;
+    cursor: pointer;
+}
+.todos:hover .cross{
+    visibility: visible;
+}
+
 
 
 
