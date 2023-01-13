@@ -37,7 +37,7 @@ app.post('/addtodos', async (req, res) => {
             isCompleted: false,
             id:Date.now()
           };
-        todos.push(todo);
+        // todos.push(todo);
         await fetch('db.json', {
             method: 'PUT',
             body: JSON.stringify(todos),
@@ -52,7 +52,7 @@ app.post('/addtodos', async (req, res) => {
         let data = await
          fs.promises.readFile('db.json', 'utf8');
         let todos = JSON.parse(data);
-        todos.push(todo);
+        // todos.push(todo);
         await fs.promises.writeFile('db.json', JSON.stringify(todos));
         res.status(201).send("To-do item added successfully");
     }
