@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 8000;
+const port = 8080;
 const path = require("path");
 const fs = require("fs");
 const staticPath = path.join(__dirname, "../public");
@@ -45,29 +45,19 @@ app.post("/addtodo", async (req, res) => {
 });
 // delete item
 app.delete("/removetodo/:id",async(req,res)=>{
-  try {
+  try{
     let response = await fs.promises.readFile("src/db.json", "utf8");
     let todos = await JSON.parse(response);
     let id= req.params.id;
     console.log(id,"48");
-    fs.readFile('src/db.json',(err,data)=>{
-      if(err)
-      throw err;
-      let jsonData=JSON.parse(data);
-      jsonData.splice(id,1);
-      fs.writeFile('src/db.json', JSON.stringify(jsonData), (err) => {
-        if (err) throw err;
-        console.log('Data written to file');
-        console.log("58",jsonData)
-      });
-    });
-    console.log("Todo is deleted Successfully!");
-    res.send(todos);
+    const filterData=todos.filter((item)=>item.id!=id);
+    await fs.promises.writeFile('src/db.json', JSON.stringify(filterData));
+    res.send(filterData);
+  }catch(err){
+    res.send(err);
   }
-   catch (error) {
-    res.send(error); 
-  }
-  });
+});
+
 
 
 app.listen(port, () => {
