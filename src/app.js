@@ -7,7 +7,6 @@ const staticPath = path.join(__dirname, "../public");
 app.use(express.static(staticPath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-let todo=[];
 // get todos
 app.get("/gettodos", async (req, res) => {
   try {
@@ -19,7 +18,7 @@ app.get("/gettodos", async (req, res) => {
       let jsonData = JSON.parse(data);
       console.log(jsonData,"19")
     });
-    console.log(todos, "20");
+    console.log(todos, "21");
   } catch (err) {
     console.error(err);
   }
@@ -49,7 +48,7 @@ app.delete("/removetodo/:id",async(req,res)=>{
     let response = await fs.promises.readFile("src/db.json", "utf8");
     let todos = await JSON.parse(response);
     let id= req.params.id;
-    console.log(id,"48");
+    console.log(id,"51");
     const filterData=todos.filter((item)=>item.id!=id);
     await fs.promises.writeFile('src/db.json', JSON.stringify(filterData));
     res.send(filterData);
@@ -57,8 +56,51 @@ app.delete("/removetodo/:id",async(req,res)=>{
     res.send(err);
   }
 });
-
-
+// clear completed
+app.get("/clearcompleted",async(req,res)=>{
+  try{
+    let response=await fs.promises.readFile('src/db.json','utf-8');
+    let todos=await JSON.parse(response);
+    const filterData = todos.filter(item => item.completed);
+    console.log(filterData,"65");
+    await fs.promises.writeFile('src/db.json',JSON.stringify(filterData));
+   res.send(filterData);
+  }catch(err){
+    res.send(err);
+  }
+ });
+//  checked functionality
+app.patch("/markcomplete/:id",async(req,res)=>{
+  try {
+    let response=await fs.promises.readFile('src/db.json','utf-8');
+    let todos=await JSON.parse(response);
+    let id=req.params.id;
+    let todo = todos.find(item => item.id === id);
+    if (todo) {
+        todo.completed = true;
+    }
+   await fs.promises.writeFile('src/db.json',JSON.stringify(todos));
+   res.send(todos);
+  }catch(err){
+    res.send(err);
+  }
+})
+// markuncompleted
+app.patch("/markuncomplete/:id",async(req,res)=>{
+  try {
+    let response=await fs.promises.readFile('src/db.json','utf-8');
+    let todos=await JSON.parse(response);
+    let id=req.params.id;
+    let todo = todos.find(item => item.id === id);
+    if (todo) {
+        todo.completed = false;
+    }
+    await fs.promises.writeFile('src/db.json',JSON.stringify(todos));
+   res.send(todo);
+  } catch (error) {
+    res.send(error);
+  }
+})
 
 app.listen(port, () => {
   console.log(`listening to port no. ${port} `);

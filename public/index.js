@@ -68,14 +68,50 @@ class myTodo {
         this.show();
         this.count();
     }
+    // checked
+    toggle(e, i) {
+        if (e.target.checked) {
+            let id = todos[i].id;
+            fetch('/markcomplete/' + id, {
+                method: 'PATCH'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    todos = data;
+                    obj.show();
+                    obj.count();
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+        else {
+            let id = todos[i].id;
+            fetch('/markuncomplete/' + id, {
+                method: 'PATCH'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    todos = data;
+                    obj.show();
+                    obj.count();
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+    }
+   
     // delete data
     remove(i) {
         let id = todos[i].id;   
         fetch('/removetodo/' + id, {
             method: 'DELETE'
         })
-            .then(response => response.json())
-            .then(data => {
+        .then(response => response.json())
+        .then(data => {
                 console.log('Success:', data);
                 todos = data;
                 obj.show();
@@ -105,6 +141,30 @@ class myTodo {
             .catch((error) => {
                 console.error('Error:', error);
             });
+    }
+    // showActive 
+    showActive() {
+        let todo = document.getElementById("todos");
+        todo.innerHTML = "";
+        all.style.border='none'
+        completed.style.border=`none`
+        let active=document.getElementById('active');
+        active.style.border=`1px solid rgba(175, 47, 47, 0.2)`
+        let html = ``;
+        for (let todo1 in todos) {
+            if (todos[todo1].completed === false) {
+                html += `<div class="todos" id="todos">
+                <ul id="ul" class="todo-list">
+                    <li>
+                    <input type="checkbox" onclick="obj.toggle(event,${todo1})" name="checkbox" id="checker" class="check-box">
+                    <label for="todoLbael" class="data">${todos[todo1].text}</label>
+                    <label for="todoCross" class="cross" onclick=(obj.remove(${todo1}))>X</label>
+                </li>
+                </ul>
+            </div>`
+            }
+        }
+        todo.innerHTML = html;
     }
     // showCompleted
     showCompleted() {
@@ -180,4 +240,16 @@ inputText.addEventListener("keypress", function (e) {
 
 function clearCompleted() {
     obj.clearCompleted();
+}
+function showAll(){
+    obj.show();
+}
+function showActive(){
+    obj.showActive();
+}
+function showCompleted(){
+    obj.showCompleted()
+}
+function completedAll() {
+    obj.toggle1();
 }
