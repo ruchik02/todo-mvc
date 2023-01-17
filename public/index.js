@@ -70,7 +70,7 @@ class myTodo {
     }
     // delete data
     remove(i) {
-        let id = todos[i]._id;   
+        let id = todos[i].id;   
         fetch('/removetodo/' + id, {
             method: 'DELETE'
         })
