@@ -101,6 +101,33 @@ app.patch("/markuncomplete/:id",async(req,res)=>{
     res.send(error);
   }
 })
+//  markallcompleted
+app.get("/markallcompleted",async(req,res)=>{
+  let response=await fs.promises.readFile('src/db.json','utf-8');
+  let todos=await JSON.parse(response);
+  for(let i=0;i<todos.length;i++)
+  {
+    if(todos[i].completed==false)
+    todos[i].completed=true;
+    console.log(todos[i],"113");
+  }
+  await fs.promises.writeFile('src/db.json',JSON.stringify(todos));
+  res.send(todos);
+})
+
+// uncompleted
+app.get("/markalluncompleted",async(req,res)=>{
+  let response=await fs.promises.readFile('src/db.json','utf-8');
+  let todos=await JSON.parse(response);
+  for(let i=0;i<todos.length;i++)
+  {
+    if(todos[i].completed==true)
+    todos[i].completed=false;
+    console.log(todos[i],"128");
+  }
+  await fs.promises.writeFile('src/db.json',JSON.stringify(todos));
+  res.send(todos);
+})
 
 app.listen(port, () => {
   console.log(`listening to port no. ${port} `);
