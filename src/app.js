@@ -75,7 +75,7 @@ app.patch("/markcomplete/:id",async(req,res)=>{
     let response=await fs.promises.readFile('src/db.json','utf-8');
     let todos=await JSON.parse(response);
     let id=req.params.id;
-    let todo = todos.find(item => item.id === id);
+    let todo = todos.find(item => item.id === parseInt(id));
     if (todo) {
         todo.completed = true;
     }
@@ -91,12 +91,12 @@ app.patch("/markuncomplete/:id",async(req,res)=>{
     let response=await fs.promises.readFile('src/db.json','utf-8');
     let todos=await JSON.parse(response);
     let id=req.params.id;
-    let todo = todos.find(item => item.id === id);
+    let todo = todos.find(item => item.id === parseInt(id));
     if (todo) {
         todo.completed = false;
     }
     await fs.promises.writeFile('src/db.json',JSON.stringify(todos));
-   res.send(todo);
+   res.send(todos);
   } catch (error) {
     res.send(error);
   }
