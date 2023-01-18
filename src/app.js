@@ -61,7 +61,7 @@ app.get("/clearcompleted",async(req,res)=>{
   try{
     let response=await fs.promises.readFile('src/db.json','utf-8');
     let todos=await JSON.parse(response);
-    const filterData = todos.filter(item => item.completed);
+    const filterData = todos.filter(item => !item.completed);
     console.log(filterData,"65");
     await fs.promises.writeFile('src/db.json',JSON.stringify(filterData));
    res.send(filterData);
